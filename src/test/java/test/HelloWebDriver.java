@@ -31,27 +31,25 @@ public class HelloWebDriver {
         options.addArguments("start-maximized");
         options.addArguments("disable-infobars");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5000,
+        driver.manage().timeouts().implicitlyWait(15000,
                 TimeUnit.MILLISECONDS);
-        driver.manage().timeouts().pageLoadTimeout(5000,
+        driver.manage().timeouts().pageLoadTimeout(15000,
                 TimeUnit.MILLISECONDS);
-        driver.manage().timeouts().setScriptTimeout(5000,
+        driver.manage().timeouts().setScriptTimeout(16000,
                 TimeUnit.MILLISECONDS);
         driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
 
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        driver.get("https://junior.webquik.ru/");
-        wait = new WebDriverWait(driver,10);
+
     }
     @org.junit.Test
     public  void signIntoSystem() throws InterruptedException {
 
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.id("textfield-1015-inputEl")));
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.id("textfield-1017-inputEl")));
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.id("button-1021-btnIconEl")));
+        driver.get("https://junior.webquik.ru/");
+        Thread.sleep(10000);
+
+
+
         loginPageObj = new LoginPage(driver);
 
         loginPageObj.singIntoSystemAsUser("U0191767","06258");
@@ -60,33 +58,34 @@ public class HelloWebDriver {
 
     @org.junit.Test
     public  void createNewTicketWithLimits() throws InterruptedException {
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.xpath("//*[@id=\"textfield-1015-inputEl\"]")));
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.xpath("//*[@id=\"textfield-1017-inputEl\"]")));
-        wait.until(ExpectedConditions.presenceOfElementLocated
-                (By.xpath("//*[@id=\"button-1021-btnIconEl\"]")));
+        driver.get("https://junior.webquik.ru/");
+        Thread.sleep(10000);
+
         loginPageObj = new LoginPage(driver);
         loginPageObj.singIntoSystemAsUser("U0191767","06258");
 
-        Thread.sleep(5000);
         Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
-
+        homePage = new HomePage(driver);
         homePage.createNewTicketWithlimits("CNYRUB_SPT","5","1");
     }
     @Test
     public  void createNewTicketWithMarketablePrice() throws InterruptedException {
-        Thread.sleep(5000);
+        driver.get("https://junior.webquik.ru/");
+
+        Thread.sleep(10000);
+
+        loginPageObj = new LoginPage(driver);
+
         loginPageObj.singIntoSystemAsUser("U0191767","06258");
 
-        Thread.sleep(5000);
-        Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
 
+        Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
+        homePage = new HomePage(driver);
         homePage.createNewTicketWithMarket("CHMF","5");
     }
     @After
     public void closeBrowser() {
-        driver.quit();
+        driver.close();
         driver = null;
     }
 }

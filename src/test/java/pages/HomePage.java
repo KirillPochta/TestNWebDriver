@@ -69,6 +69,7 @@ public class HomePage {
             newTicketButton.click();
             tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
             inputNameOfLot.sendKeys(nameOfLot);
+            inputNameOfLot.sendKeys(Keys.ENTER);
             numberOfLotsToBuy.sendKeys(countOfLots);
             costForInstrument.sendKeys("1");
             submitTicketButton.click();
