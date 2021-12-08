@@ -58,6 +58,12 @@ public class HomePage {
     @FindBy(id = "button-2136-btnIconEl")
     private WebElement changeTypeOfTicketToMarketable;
 
+    @FindBy(id = "tool-2520-toolEl")
+    private WebElement closeWindowOfTicket;
+
+    @FindBy(id = "checkbox-2064-inputEl")
+    private WebElement stopTicketButton;
+
     public HomePage(WebDriver driver) {
         this.driver=driver;
         PageFactory.initElements(driver, this);
@@ -67,6 +73,7 @@ public class HomePage {
     public void createNewTicketWithlimits(String nameOfLot, String countOfLots, String costPerInstruments) {
         try {
             newTicketButton.click();
+            Thread.sleep(5000);
             tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n" + Keys.ENTER);
             Thread.sleep(5000);
             inputNameOfLot.sendKeys(nameOfLot);
@@ -86,20 +93,28 @@ public class HomePage {
             logger.log(Level.INFO,e.getMessage());
         }
     }
-    public void createNewTicketWithMarket(String nameOfLot, String countOfLots) throws InterruptedException {
-            newTicketButton.click();
-            tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
-            Thread.sleep(5000);
-            inputNameOfLot.sendKeys(nameOfLot);
-            inputNameOfLot.sendKeys(Keys.ENTER);
-            numberOfLotsToBuy.sendKeys(countOfLots);
-            changeTypeOfTicketToMarketable.click();
-            submitTicketButton.click();
-            sendTicketButton.click();
+    public void createNewTicketWithMarket(String nameOfLot, String countOfLots,String costForEachInstument) throws InterruptedException {
+            try {
+                newTicketButton.click();
+                tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
+                Thread.sleep(5000);
+                inputNameOfLot.sendKeys(nameOfLot);
+                inputNameOfLot.sendKeys(Keys.ENTER);
+                numberOfLotsToBuy.sendKeys(countOfLots);
+                costForInstrument.sendKeys(costForEachInstument);
+                stopTicketButton.click();
+                submitTicketButton.click();
+                sendTicketButton.click();
 
-            Assert.assertEquals(clientsCode.getText(), clientsCodeAfterSubmitTicket.getText());
-            Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
-            Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
-            Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
-       }
-}
+                Assert.assertEquals(clientsCode.getText(), clientsCodeAfterSubmitTicket.getText());
+                Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
+                Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
+                Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
+            }
+            catch (Exception e){
+                Logger logger = Logger.getLogger(HomePage.class.getName());
+                logger.log(Level.INFO,e.getMessage());
+            }
+        }
+   }
+

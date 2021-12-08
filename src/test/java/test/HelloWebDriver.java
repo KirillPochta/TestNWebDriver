@@ -68,7 +68,7 @@ public class HelloWebDriver {
 
         Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
         homePage = new HomePage(driver);
-        homePage.createNewTicketWithMarket("CHMF","5");
+        homePage.createNewTicketWithMarket("CHMF","5","1");
     }
     @After
     public void closeBrowser() {
