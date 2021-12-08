@@ -12,12 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HomePage {
-    private WebDriver driver = new ChromeDriver();
+    private WebDriver driver;
 
     @FindBy(xpath = "//*[@id=\"button-1050-btnIconEl\"]")
     private WebElement newTicketButton;
 
-    @FindBy(name = "combobox-2022-inputEl")
+    @FindBy(xpath = "//*[@id=\"combobox-2022-inputEl\"]")
     private WebElement tradeNumber;
 
     @FindBy(xpath = "//*[@id=\"combobox-2024-inputEl\"]")
@@ -26,10 +26,10 @@ public class HomePage {
     @FindBy(xpath = "//*[@id=\"combobox-2023-inputEl\"]")
     private WebElement clientsCode;
 
-    @FindBy(xpath = "//*[@id=\"plusminusnumberfield-2333-inputEl\"]")
+    @FindBy(id = "plusminusnumberfield-2032-inputEl")
     private WebElement numberOfLotsToBuy; //5
 
-    @FindBy(xpath = "//*[@id=\"plusminusnumberfield-2357-inputEl\"]")
+    @FindBy(id = "plusminusnumberfield-2056-inputEl")
     private WebElement costForInstrument; //1
 
     @FindBy(xpath = "//*[@id=\"displayfield-2359-inputEl\"]")
@@ -38,7 +38,7 @@ public class HomePage {
     @FindBy(xpath = "//*[@id=\"submitBtn2-btnIconEl\"]")
     private WebElement submitTicketButton;
 
-    @FindBy(xpath = "//*[@id=\"button-2445-btnIconEl\"]")
+    @FindBy(id = "button-2203-btnIconEl")
     private WebElement sendTicketButton;
 
 
@@ -55,7 +55,7 @@ public class HomePage {
 
     @FindBy(xpath = "//*[@id=\"displayfield-2470-inputEl\"]")
     private WebElement sumOfTransactionAfterSubmit;
-    @FindBy(xpath = "//*[@id=\"button-2232-btnIconEl\"]")
+    @FindBy(id = "button-2136-btnIconEl")
     private WebElement changeTypeOfTicketToMarketable;
 
     public HomePage(WebDriver driver) {
@@ -67,7 +67,8 @@ public class HomePage {
     public void createNewTicketWithlimits(String nameOfLot, String countOfLots, String costPerInstruments) {
         try {
             newTicketButton.click();
-            tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
+            tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n" + Keys.ENTER);
+            Thread.sleep(5000);
             inputNameOfLot.sendKeys(nameOfLot);
             inputNameOfLot.sendKeys(Keys.ENTER);
             numberOfLotsToBuy.sendKeys(countOfLots);
@@ -85,10 +86,12 @@ public class HomePage {
             logger.log(Level.INFO,e.getMessage());
         }
     }
-    public void createNewTicketWithMarket(String nameOfLot, String countOfLots) {
+    public void createNewTicketWithMarket(String nameOfLot, String countOfLots) throws InterruptedException {
             newTicketButton.click();
             tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
+            Thread.sleep(5000);
             inputNameOfLot.sendKeys(nameOfLot);
+            inputNameOfLot.sendKeys(Keys.ENTER);
             numberOfLotsToBuy.sendKeys(countOfLots);
             changeTypeOfTicketToMarketable.click();
             submitTicketButton.click();
@@ -99,5 +102,4 @@ public class HomePage {
             Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
             Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
        }
-    }
-
+}

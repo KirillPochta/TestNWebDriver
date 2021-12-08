@@ -42,19 +42,6 @@ public class HelloWebDriver {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 
     }
-    @org.junit.Test
-    public  void signIntoSystem() throws InterruptedException {
-
-        driver.get("https://junior.webquik.ru/");
-        Thread.sleep(10000);
-
-
-
-        loginPageObj = new LoginPage(driver);
-
-        loginPageObj.singIntoSystemAsUser("U0191767","06258");
-        Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
-    }
 
     @org.junit.Test
     public  void createNewTicketWithLimits() throws InterruptedException {
