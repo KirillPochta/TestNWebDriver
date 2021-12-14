@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -17,7 +16,7 @@ public class HomePage {
     @FindBy(xpath = "//*[@id=\"button-1050-btnIconEl\"]")
     private WebElement newTicketButton;
 
-    @FindBy(xpath = "//*[@id=\"combobox-2022-inputEl\"]")
+    @FindBy(id = "combobox-2208-inputEl\"")
     private WebElement tradeNumber;
 
     @FindBy(xpath = "//*[@id=\"combobox-2024-inputEl\"]")
@@ -42,7 +41,7 @@ public class HomePage {
     private WebElement sendTicketButton;
 
 
-    @FindBy(xpath = "//*[@id=\"displayfield-2464-inputEl\"]")
+    @FindBy(xpath = "//div[text()='MB1000100002']")
     private WebElement tradeNumberAfterSubmitTicket;
 
 
@@ -64,6 +63,12 @@ public class HomePage {
     @FindBy(id = "checkbox-2064-inputEl")
     private WebElement stopTicketButton;
 
+    private String tradenumberActual;
+    private String clientsCodeActual;
+
+    private String tradenumberExpected;
+    private String clientsCodeExpected;
+
     public HomePage(WebDriver driver) {
         this.driver=driver;
         PageFactory.initElements(driver, this);
@@ -71,27 +76,31 @@ public class HomePage {
     }
 
     public void createNewTicketWithlimits(String nameOfLot, String countOfLots, String costPerInstruments) {
-        try {
+
             newTicketButton.click();
-            Thread.sleep(5000);
+
             tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n" + Keys.ENTER);
-            Thread.sleep(5000);
+
+            tradenumberActual = tradeNumber.getText();
+            clientsCodeActual = clientsCode.getText();
+
             inputNameOfLot.sendKeys(nameOfLot);
             inputNameOfLot.sendKeys(Keys.ENTER);
+
             numberOfLotsToBuy.sendKeys(countOfLots);
             costForInstrument.sendKeys("1");
+
             submitTicketButton.click();
+
+            tradenumberExpected = tradeNumberAfterSubmitTicket.getText();
+            clientsCodeExpected = clientsCodeAfterSubmitTicket.getText();
+
             sendTicketButton.click();
 
-            Assert.assertEquals(clientsCode.getText(), clientsCodeAfterSubmitTicket.getText());
+            Assert.assertEquals(clientsCodeActual, clientsCodeExpected);
             Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
             Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
             Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
-        }
-        catch (Exception e){
-            Logger logger = Logger.getLogger(HomePage.class.getName());
-            logger.log(Level.INFO,e.getMessage());
-        }
     }
     public void createNewTicketWithMarket(String nameOfLot, String countOfLots,String costForEachInstument) throws InterruptedException {
             try {

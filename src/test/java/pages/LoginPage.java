@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,7 @@ public class LoginPage {
     @FindBy(xpath = "//*[@id=\"textfield-1017-inputEl\"]")
     private WebElement passwordField;
 
-    @FindBy(xpath = "//*[@id=\"button-1021-btnIconEl\"]")
+    @FindBy(id = "button-1021-btnIconEl")
     private WebElement signButton;
 
     public LoginPage(WebDriver driver) {
@@ -34,5 +35,6 @@ public class LoginPage {
             loginFiled.sendKeys(login);
             passwordField.sendKeys(password);
             signButton.click();
+            Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.3");
     }
 }

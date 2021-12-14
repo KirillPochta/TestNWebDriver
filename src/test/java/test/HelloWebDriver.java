@@ -27,9 +27,10 @@ public class HelloWebDriver {
     public void browserSetup() {
         System.out.println("aaa");
         options = new ChromeOptions();
-        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("start-maximized");
         options.addArguments("disable-infobars");
+
+
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(15000,
                 TimeUnit.MILLISECONDS);
@@ -47,11 +48,9 @@ public class HelloWebDriver {
     public  void createNewTicketWithLimits() throws InterruptedException {
         driver.get("https://junior.webquik.ru/");
         Thread.sleep(10000);
-
         loginPageObj = new LoginPage(driver);
-        loginPageObj.singIntoSystemAsUser("U0191767","06258");
+        loginPageObj.singIntoSystemAsUser("U0193146","08134");
 
-        Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
         homePage = new HomePage(driver);
         homePage.createNewTicketWithlimits("CNYRUB_SPT","5","1");
     }
@@ -59,14 +58,12 @@ public class HelloWebDriver {
     public  void createNewTicketWithMarketablePrice() throws InterruptedException {
         driver.get("https://junior.webquik.ru/");
 
-        Thread.sleep(10000);
 
         loginPageObj = new LoginPage(driver);
 
-        loginPageObj.singIntoSystemAsUser("U0191767","06258");
+        loginPageObj.singIntoSystemAsUser("U0193146","08134");
 
 
-        Assert.assertEquals(driver.getTitle(),"webQUIK 7.6.2");
         homePage = new HomePage(driver);
         homePage.createNewTicketWithMarket("CHMF","5","1");
     }
