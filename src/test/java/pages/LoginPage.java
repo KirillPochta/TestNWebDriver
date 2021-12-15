@@ -16,13 +16,13 @@ public class LoginPage {
     //private WebElement passwordField = driver.findElement(By.id("textfield-1017-inputEl"));
     //private WebElement signButton = driver.findElement(By.id("button-1021-btnIconEl"));
 
-    @FindBy(xpath = "//*[@id=\"textfield-1015-inputEl\"]")
+    @FindBy(xpath = "//input[@name='username']")
     private WebElement loginFiled;
 
-    @FindBy(xpath = "//*[@id=\"textfield-1017-inputEl\"]")
+    @FindBy(xpath = "//input[@name='password']")
     private WebElement passwordField;
 
-    @FindBy(id = "button-1021-btnIconEl")
+    @FindBy(xpath = "//a[contains(@class,\"x-btn x\")]//span[2]")
     private WebElement signButton;
 
     public LoginPage(WebDriver driver) {

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,52 +15,41 @@ import java.util.logging.Logger;
 public class HomePage {
     private WebDriver driver;
 
-    @FindBy(xpath = "//*[@id=\"button-1050-btnIconEl\"]")
+    @FindBy(xpath = "//span[contains(@style,'two-fingers')]")
     private WebElement newTicketButton;
 
-    @FindBy(id = "combobox-2208-inputEl\"")
+    @FindBy(xpath = "//td[contains(@colspan,'2')]//table[contains(@id,'combobox-2')]//td[contains(@class,'x-form-trigger')]//input[contains(@class,'x-form-field')][1]")
     private WebElement tradeNumber;
 
-    @FindBy(xpath = "//*[@id=\"combobox-2024-inputEl\"]")
+    @FindBy(xpath = "//div[contains(@class,'x-h')]//input[@placeholder='Найти инструмент']")
     private WebElement inputNameOfLot;
 
-    @FindBy(xpath = "//*[@id=\"combobox-2023-inputEl\"]")
+    @FindBy(xpath = "//td[contains(@id,'combobox-2')]//input[contains(@tabindex,'6')]")
     private WebElement clientsCode;
 
-    @FindBy(id = "plusminusnumberfield-2032-inputEl")
+    @FindBy(xpath = "//td[contains(@id,'plus')]//input[contains(@data-errorqtip,'Значение поля')]")
     private WebElement numberOfLotsToBuy; //5
 
-    @FindBy(id = "plusminusnumberfield-2056-inputEl")
+    @FindBy(xpath = "//td[contains(@class,'x-form-tr')]//input[contains(@tabindex,'11')]")
     private WebElement costForInstrument; //1
 
-    @FindBy(xpath = "//*[@id=\"displayfield-2359-inputEl\"]")
+    @FindBy(xpath = "//table[contains(@style,'195px; top: 25px')]//div[contains(@role,'input')]")
     private WebElement sumOfTransactionBeforeSubmit;
 
-    @FindBy(xpath = "//*[@id=\"submitBtn2-btnIconEl\"]")
+    @FindBy(xpath = "//a[@tabindex=41]//span[contains(@style,'height: 19px')]//span[contains(@id,'submit')][2]")
     private WebElement submitTicketButton;
 
-    @FindBy(id = "button-2203-btnIconEl")
+    @FindBy(xpath = "//a[@tabindex=41]//span[contains(@style,'height: 19px')]//span[contains(@id,'submit')][2]")
     private WebElement sendTicketButton;
 
 
-    @FindBy(xpath = "//div[text()='MB1000100002']")
+    @FindBy(xpath = "//td[@colspan=2]//div[contains(@style,'width: 100%')][1]")
     private WebElement tradeNumberAfterSubmitTicket;
 
 
-    @FindBy(xpath = "//*[@id=\"displayfield-2465-inputEl\"]")
-    private WebElement clientsCodeAfterSubmitTicket;
-
-
-    @FindBy(xpath = "//*[@id=\"displayfield-2466-inputEl\"]")
-    private WebElement nameOfLotAfterSubmit;
-
-    @FindBy(xpath = "//*[@id=\"displayfield-2470-inputEl\"]")
-    private WebElement sumOfTransactionAfterSubmit;
     @FindBy(id = "button-2136-btnIconEl")
     private WebElement changeTypeOfTicketToMarketable;
 
-    @FindBy(id = "tool-2520-toolEl")
-    private WebElement closeWindowOfTicket;
 
     @FindBy(id = "checkbox-2064-inputEl")
     private WebElement stopTicketButton;
@@ -75,6 +66,15 @@ public class HomePage {
 
     }
 
+    protected static WebElement waitForElementToBeClickable(WebDriver driver, WebElement element) {
+        return new WebDriverWait(driver, 100)
+                .until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    protected static WebElement waitForVisibilityOfElement(WebDriver driver, WebElement element) {
+        return new WebDriverWait(driver, 100)
+                .until(ExpectedConditions.visibilityOf(element));
+    }
     public void createNewTicketWithlimits(String nameOfLot, String countOfLots, String costPerInstruments) {
 
             newTicketButton.click();
@@ -93,14 +93,11 @@ public class HomePage {
             submitTicketButton.click();
 
             tradenumberExpected = tradeNumberAfterSubmitTicket.getText();
-            clientsCodeExpected = clientsCodeAfterSubmitTicket.getText();
 
             sendTicketButton.click();
 
             Assert.assertEquals(clientsCodeActual, clientsCodeExpected);
             Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
-            Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
-            Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
     }
     public void createNewTicketWithMarket(String nameOfLot, String countOfLots,String costForEachInstument) throws InterruptedException {
             try {
@@ -115,10 +112,7 @@ public class HomePage {
                 submitTicketButton.click();
                 sendTicketButton.click();
 
-                Assert.assertEquals(clientsCode.getText(), clientsCodeAfterSubmitTicket.getText());
                 Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
-                Assert.assertEquals(nameOfLot, nameOfLotAfterSubmit.getText());
-                Assert.assertEquals(sumOfTransactionBeforeSubmit.getText(), sumOfTransactionAfterSubmit.getText());
             }
             catch (Exception e){
                 Logger logger = Logger.getLogger(HomePage.class.getName());

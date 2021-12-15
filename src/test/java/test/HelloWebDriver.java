@@ -22,13 +22,20 @@ public class HelloWebDriver {
     private LoginPage loginPageObj;
     private HomePage homePage;
     private WebDriverWait wait;
-
+    public String timeBeforeChanges;
+    public String timeAfterChanges;
     @Before
     public void browserSetup() {
-        System.out.println("aaa");
         options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        options.addArguments("disable-infobars");
+        options.setPageLoadStrategy(PageLoadStrategy.NONE); // https://www.skptricks.com/2018/08/timed-out-receiving-message-from-renderer-selenium.html
+        options.addArguments("start-maximized"); // https://stackoverflow.com/a/26283818/1689770
+        options.addArguments("enable-automation"); // https://stackoverflow.com/a/43840128/1689770
+        options.addArguments("--headless"); // only if you are ACTUALLY running headless
+        options.addArguments("--no-sandbox"); //https://stackoverflow.com/a/50725918/1689770
+        options.addArguments("--disable-infobars"); //https://stackoverflow.com/a/43840128/1689770
+        options.addArguments("--disable-dev-shm-usage"); //https://stackoverflow.com/a/50725918/1689770
+        options.addArguments("--disable-browser-side-navigation"); //https://stackoverflow.com/a/49123152/1689770
+        options.addArguments("--disable-gpu");
 
 
         driver = new ChromeDriver(options);
@@ -47,7 +54,6 @@ public class HelloWebDriver {
     @org.junit.Test
     public  void createNewTicketWithLimits() throws InterruptedException {
         driver.get("https://junior.webquik.ru/");
-        Thread.sleep(10000);
         loginPageObj = new LoginPage(driver);
         loginPageObj.singIntoSystemAsUser("U0193146","08134");
 
