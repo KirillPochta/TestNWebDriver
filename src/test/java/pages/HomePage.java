@@ -18,16 +18,16 @@ public class HomePage {
     @FindBy(xpath = "//span[contains(@style,'two-fingers')]")
     private WebElement newTicketButton;
 
-    @FindBy(xpath = "//td[contains(@colspan,'2')]//table[contains(@id,'combobox-2')]//td[contains(@class,'x-form-trigger')]//input[contains(@class,'x-form-field')][1]")
+    @FindBy(xpath = "//input[contains(@tabindex,'5')]")
     private WebElement tradeNumber;
 
-    @FindBy(xpath = "//div[contains(@class,'x-h')]//input[@placeholder='Найти инструмент']")
+    @FindBy(xpath = "//input[contains(@style,'height: 24px;')]")
     private WebElement inputNameOfLot;
 
     @FindBy(xpath = "//td[contains(@id,'combobox-2')]//input[contains(@tabindex,'6')]")
     private WebElement clientsCode;
 
-    @FindBy(xpath = "//td[contains(@id,'plus')]//input[contains(@data-errorqtip,'Значение поля')]")
+    @FindBy(xpath = "//td[@colspan=3]//td[contains(@class,'x-form-trigger-input')]//input[contains(@tabindex,'1')]")
     private WebElement numberOfLotsToBuy; //5
 
     @FindBy(xpath = "//td[contains(@class,'x-form-tr')]//input[contains(@tabindex,'11')]")
@@ -35,11 +35,11 @@ public class HomePage {
 
     @FindBy(xpath = "//table[contains(@style,'195px; top: 25px')]//div[contains(@role,'input')]")
     private WebElement sumOfTransactionBeforeSubmit;
-
-    @FindBy(xpath = "//a[@tabindex=41]//span[contains(@style,'height: 19px')]//span[contains(@id,'submit')][2]")
+    //*[@id="submitBtn2-btnIconEl"]
+    @FindBy(xpath = "//a[@tabindex=41]//span[contains(@style,'height: 19px')]//span[contains(@id,'submit')]//span[@role='img']")
     private WebElement submitTicketButton;
 
-    @FindBy(xpath = "//a[@tabindex=41]//span[contains(@style,'height: 19px')]//span[contains(@id,'submit')][2]")
+    @FindBy(xpath = "//a[contains(@style,'left: 271px; top: 0px;')]//span[contains(@style,'height: 19px')]//span[@role='img'][1]")
     private WebElement sendTicketButton;
 
 
@@ -47,77 +47,84 @@ public class HomePage {
     private WebElement tradeNumberAfterSubmitTicket;
 
 
-    @FindBy(id = "button-2136-btnIconEl")
-    private WebElement changeTypeOfTicketToMarketable;
+    @FindBy(xpath = "//div[contains(@style,'left: 706px; margin: 0px')]")
+    private WebElement timeBeforeTicketCreate;
 
+    @FindBy(xpath = "//div[contains(@style,'left: 706px; margin: 0px')]")
+    private WebElement timeAfterTicketCreate;
 
-    @FindBy(id = "checkbox-2064-inputEl")
-    private WebElement stopTicketButton;
+    @FindBy(xpath = "//td[@colspan='3']//input[@tabindex='16']")
+    private WebElement setStopTicket;
 
-    private String tradenumberActual;
-    private String clientsCodeActual;
-
-    private String tradenumberExpected;
-    private String clientsCodeExpected;
 
     public HomePage(WebDriver driver) {
-        this.driver=driver;
+        this.driver = driver;
         PageFactory.initElements(driver, this);
 
     }
 
     protected static WebElement waitForElementToBeClickable(WebDriver driver, WebElement element) {
-        return new WebDriverWait(driver, 100)
+        return new WebDriverWait(driver, 30)
                 .until(ExpectedConditions.elementToBeClickable(element));
     }
 
     protected static WebElement waitForVisibilityOfElement(WebDriver driver, WebElement element) {
-        return new WebDriverWait(driver, 100)
+        return new WebDriverWait(driver, 30)
                 .until(ExpectedConditions.visibilityOf(element));
     }
-    public void createNewTicketWithlimits(String nameOfLot, String countOfLots, String costPerInstruments) {
 
-            newTicketButton.click();
-
-            tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n" + Keys.ENTER);
-
-            tradenumberActual = tradeNumber.getText();
-            clientsCodeActual = clientsCode.getText();
-
-            inputNameOfLot.sendKeys(nameOfLot);
-            inputNameOfLot.sendKeys(Keys.ENTER);
-
-            numberOfLotsToBuy.sendKeys(countOfLots);
-            costForInstrument.sendKeys("1");
-
-            submitTicketButton.click();
-
-            tradenumberExpected = tradeNumberAfterSubmitTicket.getText();
-
-            sendTicketButton.click();
-
-            Assert.assertEquals(clientsCodeActual, clientsCodeExpected);
-            Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
+    public void openWindowOfCreationTicket() {
+        waitForElementToBeClickable(driver, newTicketButton);
+        newTicketButton.click();
     }
-    public void createNewTicketWithMarket(String nameOfLot, String countOfLots,String costForEachInstument) throws InterruptedException {
-            try {
-                newTicketButton.click();
-                tradeNumber.sendKeys(Keys.ARROW_DOWN + "\n");
-                Thread.sleep(5000);
-                inputNameOfLot.sendKeys(nameOfLot);
-                inputNameOfLot.sendKeys(Keys.ENTER);
-                numberOfLotsToBuy.sendKeys(countOfLots);
-                costForInstrument.sendKeys(costForEachInstument);
-                stopTicketButton.click();
-                submitTicketButton.click();
-                sendTicketButton.click();
 
-                Assert.assertEquals(tradeNumber.getText(), tradeNumberAfterSubmitTicket.getText());
-            }
-            catch (Exception e){
-                Logger logger = Logger.getLogger(HomePage.class.getName());
-                logger.log(Level.INFO,e.getMessage());
-            }
-        }
-   }
+    public String setDateBeforTicketCreation() {
+            return timeBeforeTicketCreate.getText();
+    }
+
+    public String setDateAfterTicketCreation() {
+            return timeAfterTicketCreate.getText();
+    }
+
+    public void setStopTicketMethod() {
+        waitForElementToBeClickable(driver,setStopTicket);
+        setStopTicket.click();
+    }
+
+    public String tradeNumberAfterSubmit() {
+        return tradeNumberAfterSubmitTicket.getText();
+    }
+
+    public void fillFieldsOnTicketWindow(String nameOfLot, String countOfLots, String costPerInstruments) {
+        waitForVisibilityOfElement(driver, tradeNumber);
+        waitForVisibilityOfElement(driver, inputNameOfLot);
+        waitForVisibilityOfElement(driver, numberOfLotsToBuy);
+        waitForVisibilityOfElement(driver, costForInstrument);
+
+        tradeNumber.sendKeys(Keys.ENTER+"\n");
+        inputNameOfLot.sendKeys(nameOfLot);
+        inputNameOfLot.sendKeys(Keys.ENTER);
+        numberOfLotsToBuy.sendKeys(countOfLots);
+        costForInstrument.sendKeys(costPerInstruments);
+    }
+
+    public void pressSubmitTicketButton() {
+        waitForElementToBeClickable(driver, submitTicketButton);
+        submitTicketButton.click();
+    }
+
+    public void sendOfCretedTicketButton() {
+        waitForElementToBeClickable(driver, sendTicketButton);
+        waitForVisibilityOfElement(driver, tradeNumberAfterSubmitTicket);
+        sendTicketButton.click();
+    }
+
+    public String getExpectedTradeNumber() {
+        return tradeNumberAfterSubmitTicket.getText();
+    }
+
+    public String getActualTradeNumber() {
+        return tradeNumber.getText();
+    }
+}
 
