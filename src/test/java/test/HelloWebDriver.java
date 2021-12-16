@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import pages.HomePage;
-import pages.LoginPage;
+import pageObject_model.page.HomePage;
+import pageObject_model.page.LoginPage;
 import java.util.concurrent.TimeUnit;
 
 
