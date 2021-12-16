@@ -43,7 +43,7 @@ public class HelloWebDriver {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
     }
 
-    @org.junit.Test
+    @Test
     public  void createNewTicketWithLimits() throws InterruptedException {
         driver.get("https://junior.webquik.ru/");
         Thread.sleep(10000);
